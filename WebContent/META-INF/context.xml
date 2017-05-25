@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context reloadable ="true">
+    <Resource
+       name="jdbc/edums" 
+       type="javax.sql.DataSource"
+       maxTotal="100" 
+       maxIdle="30" 
+       maxWaitMillis="100000"
+       username="root" 
+       password="root" 
+       driverClassName="com.mysql.jdbc.Driver"
+       url="jdbc:mysql://127.0.0.1:3306/edums?characterEncoding=utf8"
+	/>
+</Context>
