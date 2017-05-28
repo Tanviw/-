@@ -10,20 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.DAO.StudentDao;
+import com.DAO.TeacherDao;
 
+import com.javabeans.Teacher;
 
 /**
- * Servlet implementation class GetMajorServlet
+ * Servlet implementation class EditTeacServlet
  */
-@WebServlet("/GetMajorServlet")
-public class GetMajorServlet extends HttpServlet {
+@WebServlet("/EditTeacServlet")
+public class EditTeacServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetMajorServlet() {
+    public EditTeacServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,15 +41,23 @@ public class GetMajorServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
     	PrintWriter out=response.getWriter();
-		String academy=request.getParameter("academy");
-		StudentDao dao=new StudentDao();
-        ArrayList<String> majorList=dao.getMajor(academy);
-        
-       if(majorList!=null){
-    	   out.print(majorList);
-       }else{
-    	   out.print("0");
-       }
+    	TeacherDao dao=new TeacherDao();
+    	Teacher teacher=new Teacher();
+    	
+    	teacher.setTeacherAccount(Long.parseLong(request.getParameter("teacherAccount")));
+    	teacher.setTeacherName(request.getParameter("teacherName"));
+    	teacher.setPassword(request.getParameter("password"));
+    	teacher.setSex(request.getParameter("sex"));
+    	teacher.setTechnicalTitle(request.getParameter("technicalTitle"));
+    	teacher.setAcademy(request.getParameter("academy"));
+    	teacher.setResearchFields(request.getParameter("researchFields"));
+        String result=dao.editTeacher(teacher);
+        if(result!="error"){
+            ArrayList<Teacher> teacList=dao.findAllTeacher();
+            request.getSession().setAttribute("teacList", teacList);
+        }
+        out.print(result);
 	}
+	
 
 }

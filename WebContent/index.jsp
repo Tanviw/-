@@ -56,15 +56,15 @@
       <tr>
         <td><label for="account">账号:&nbsp;</label></td>
         <td>
-          <input name="account" id="account" tabindex="1" title="请输入账号" type="text" value="" style="width:125px;">
+          <input name="account" id="account" tabindex="1" title="请输入账号" type="text" value="" style="width:125px;" onfocus="hideHints()" autofocus="autofocus">
         </td>
       </tr>
       <tr>
         <td>
-          <label for="password">密　码:&nbsp;</label>
+          <label for="password">密码:&nbsp;</label>
         </td>
         <td>
-          <input id="password" name="password" tabindex="2" type="password" style="width:125px;">
+          <input id="password" name="password" tabindex="2" type="password" style="width:125px;" onfocus="hideHints()">
           <input name="encodedPassword" type="hidden" value="">
         </td>
       </tr>
@@ -95,5 +95,6 @@
 
 <script type="text/javascript" src="js/login.js"></script>
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/admin.js"></script>
 </body>
 </html>

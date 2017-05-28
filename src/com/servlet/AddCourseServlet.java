@@ -10,20 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.DAO.StudentDao;
+import com.DAO.CourseDao;
+import com.javabeans.Course;
 
 
 /**
- * Servlet implementation class GetMajorServlet
+ * Servlet implementation class AddCourseServlet
  */
-@WebServlet("/GetMajorServlet")
-public class GetMajorServlet extends HttpServlet {
+@WebServlet("/AddCourseServlet")
+public class AddCourseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetMajorServlet() {
+    public AddCourseServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,17 +39,23 @@ public class GetMajorServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		response.setContentType("text/html;charset=UTF-8");
     	PrintWriter out=response.getWriter();
-		String academy=request.getParameter("academy");
-		StudentDao dao=new StudentDao();
-        ArrayList<String> majorList=dao.getMajor(academy);
-        
-       if(majorList!=null){
-    	   out.print(majorList);
-       }else{
-    	   out.print("0");
-       }
+    	CourseDao dao=new CourseDao();
+    	Course course=new Course();
+    	course.setCourseNumber(request.getParameter("courseNumber"));
+    	course.setCourseName(request.getParameter("courseName"));
+    	course.setCredit(Integer.parseInt(request.getParameter("credit")));
+    	course.setClassHour(Integer.parseInt(request.getParameter("classHour")));
+    	String result=dao.addCourse(course);
+    	 if(result!="error"){
+             ArrayList<Course> courseList=dao.findAllCourse();
+             request.getSession().setAttribute("courseList", courseList);
+         }
+         out.print(result);
+		
+	
 	}
 
 }

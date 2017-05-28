@@ -1,23 +1,27 @@
 package com.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.DAO.ClassroomDao;
+
 /**
- * Servlet implementation class IdentifySevlet
+ * Servlet implementation class ShowClassRoomServlet
  */
-@WebServlet("/IdentifyServlet")
-public class IdentifyServlet extends HttpServlet {
+@WebServlet("/ShowClassRoomServlet")
+public class ShowClassRoomServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IdentifyServlet() {
+    public ShowClassRoomServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,22 +30,11 @@ public class IdentifyServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String account=request.getParameter("account");
-		String username=request.getParameter("username");
-		String identity=request.getParameter("identity");
-		request.getSession().setAttribute("account",account);
-		request.getSession().setAttribute("username",username);
 
-		if(identity.equals("admin")){
-			request.getSession().setAttribute("identity","管理员");
-			response.sendRedirect("ShowStuListServlet");
-		}else if(identity.equals("student")){
-			request.getSession().setAttribute("identity","同学");
-			response.sendRedirect("student.jsp?username="+username);
-		}else if(identity.equals("teacher")){
-			request.getSession().setAttribute("identity","老师");
-			response.sendRedirect("teacher.jsp?username="+username);
-		}
+		ClassroomDao dao=new ClassroomDao();
+        ArrayList<String> classRoomList=dao.findAllClassroom();
+        request.getSession().setAttribute("classRoomList", classRoomList);//返回教室信息列表
+        response.sendRedirect("adminclassroom.jsp");
 	}
 
 	/**

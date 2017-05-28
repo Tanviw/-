@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class Course implements Serializable{
 
-    private String courseNumber;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String courseNumber;
     private String courseName;  
     private int credit;         
     private int classHour;    

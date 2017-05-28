@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.DAO.StudentDao;
+import com.DAO.ClassroomDao;
 
 
 /**
- * Servlet implementation class GetMajorServlet
+ * Servlet implementation class AddClassroomServlet
  */
-@WebServlet("/GetMajorServlet")
-public class GetMajorServlet extends HttpServlet {
+@WebServlet("/AddClassroomServlet")
+public class AddClassroomServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetMajorServlet() {
+    public AddClassroomServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,6 +32,7 @@ public class GetMajorServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 	}
 
 	/**
@@ -40,15 +41,14 @@ public class GetMajorServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
     	PrintWriter out=response.getWriter();
-		String academy=request.getParameter("academy");
-		StudentDao dao=new StudentDao();
-        ArrayList<String> majorList=dao.getMajor(academy);
-        
-       if(majorList!=null){
-    	   out.print(majorList);
-       }else{
-    	   out.print("0");
-       }
+    	String classRoomLocation=request.getParameter("classRoomLocation");
+    	ClassroomDao dao=new ClassroomDao();
+    	String result=dao.addClassroom(classRoomLocation);
+    	if(result!="error"){
+    		ArrayList<String> classRoomList=dao.findAllClassroom();
+   	     	request.getSession().setAttribute("classRoomList", classRoomList);
+        }
+    	out.print(result);
 	}
 
 }

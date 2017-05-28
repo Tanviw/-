@@ -3,7 +3,11 @@ package com.javabeans;
 import java.io.Serializable;
 
 public class Student implements Serializable{
-    private Long stuAccount;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long stuAccount;
     private String idCard;
 	private String password;    
     private String stuName;   

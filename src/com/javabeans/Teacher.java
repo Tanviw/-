@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 public class Teacher implements Serializable{
 
-    private Long teacherAccount; 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long teacherAccount; 
     private String idCard;
-
 	private String password;       
     private String teacherName;    
     private String sex;             

@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.DAO.StudentDao;
+import com.DAO.ClassroomDao;
 
 
 /**
- * Servlet implementation class GetMajorServlet
+ * Servlet implementation class DelClassroomServlet
  */
-@WebServlet("/GetMajorServlet")
-public class GetMajorServlet extends HttpServlet {
+@WebServlet("/DelClassroomServlet")
+public class DelClassroomServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetMajorServlet() {
+    public DelClassroomServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,17 +38,23 @@ public class GetMajorServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		response.setContentType("text/html;charset=UTF-8");
     	PrintWriter out=response.getWriter();
-		String academy=request.getParameter("academy");
-		StudentDao dao=new StudentDao();
-        ArrayList<String> majorList=dao.getMajor(academy);
-        
-       if(majorList!=null){
-    	   out.print(majorList);
-       }else{
-    	   out.print("0");
-       }
+    	String []classroomArr=request.getParameterValues("classroomArr");
+    	String str="";
+    	int i;
+    	for(i=0;i<classroomArr.length-1;i++){
+    		str+="'"+classroomArr[i]+"',";
+    	}
+    	str+="'"+classroomArr[i]+"'";
+    	ClassroomDao dao=new ClassroomDao();
+    	String result=dao.delClassroom(str);
+    	if(result!="error"){
+    		 ArrayList<String> classRoomList=dao.findAllClassroom();
+    	     request.getSession().setAttribute("classRoomList", classRoomList);
+        }
+    	out.print(result);
 	}
 
 }
