@@ -37,7 +37,7 @@
 </div>
 <div class="clearfix"></div>
    <h4 style="color:#337ab7">学生名单</h4>
-    <table class="data table table-bordered table-striped" cellspacing="0" cellpadding="0">
+    <table class="data table table-bordered table-striped table-hover" cellspacing="0" cellpadding="0">
         <tbody id="stuList">
         <tr>
             <th>学号</th>

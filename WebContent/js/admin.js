@@ -562,7 +562,7 @@ function searchCourse(){
                     +courseMsg[i].courseName+"</td><td>"
                     +courseMsg[i].credit+"</td><td>"
                     +courseMsg[i].classHour+"</td>"
-                    +"<td><a href='javascipt:void(0);' class='edit' onclick='openCourse(this)' >开课</a></td><td><a href='javascipt:void(0);' onclick='CourseOpenedMsg(this)'>查看课程已开设信息</a></td><td><a href='javascipt:void(0);' class='delete' onclick='deleteCourse(this)' >删除课程</a></td></tr>";
+                    +"<td><a href='javascipt:void(0);'  onclick='openCourse(this)' >开课</a></td><td><a href='javascipt:void(0);' onclick='CourseOpenedMsg(this)'>查看课程已开设信息</a></td><td><a href='javascipt:void(0);'  onclick='deleteCourse(this)' >删除课程</a></td></tr>";
                 }
                 $("#courseList").html(cors);
                
@@ -644,7 +644,7 @@ function deleteCourse(e){
 function openCourse(e){
 	if(!editBtnClicked){
 		editBtnClicked=true;
-	
+		
 	$.ajax({
         type:"GET",
         url:"findTeacServlet",
@@ -683,47 +683,52 @@ function openCourse(e){
 		$("#classHourval").text(classHour);
 		
 		
-		$("#confirmOpenCourse").click(function(){
-			var teacherAccount=$("#teacherOpt option:selected").val();
-			
-			var courseTimeId=$("#courseTime option:selected").val();
-			var classRoomId=$("#classroomloc option:selected").val();
-			var capacity=$("#capacity").val();
-			$.ajax({
-		        type:"POST",
-		        url:"OpenCourseServlet",
-		        data:{
-		        	"teacherAccount":teacherAccount,
-		            "courseNumber":courseNumber,
-		            "courseTimeId":courseTimeId,
-		            "classRoomId":classRoomId,
-		            "capacity":capacity
-		        },
-		        success:function(data,status) {
-		            if(data!="error"){
-		            	    alert("开设课程成功");
-		            	    //$("#openCourserow").css("display","none");
-		            }else{
-		            	alert("开设课程失败");	
-		            	// $("#openCourserow").css("display","none");
-		            }
-		        },
-		        error:function(XMLHttpRequest, textStatus, errorThrown) {
-		           alert(XMLHttpRequest.readyState);
-		           alert(XMLHttpRequest.status);
-		            //$("#openCourserow").css("display","none");
-		        }
-		    });
-			$("#openCourserow").css("display","none");
-			editBtnClicked=false;
-		});
-		$("#cancelOpenCourse").click(function(){
-			$("#openCourserow").css("display","none");
-			editBtnClicked=false;
-		});
+		
+		
 	}
 	
 }
+
+$("#cancelOpenCourse").click(function(){
+	$("#openCourserow").css("display","none");
+	editBtnClicked=false;
+});
+
+$("#confirmOpenCourse").click(function(){
+	var courseNumber=$("#courseNumberval").text();
+	var teacherAccount=$("#teacherOpt option:selected").val();
+	
+	var courseTimeId=$("#courseTime option:selected").val();
+	var classRoomId=$("#classroomloc option:selected").val();
+	var capacity=$("#capacity").val();
+	$.ajax({
+        type:"POST",
+        url:"OpenCourseServlet",
+        data:{
+        	"teacherAccount":teacherAccount,
+            "courseNumber":courseNumber,
+            "courseTimeId":courseTimeId,
+            "classRoomId":classRoomId,
+            "capacity":capacity
+        },
+        success:function(data,status) {
+            if(data!="error"){
+            	    alert("开设课程成功");
+            	    //$("#openCourserow").css("display","none");
+            }else{
+            	alert("开设课程失败");	
+            	// $("#openCourserow").css("display","none");
+            }
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown) {
+           alert(XMLHttpRequest.readyState);
+           alert(XMLHttpRequest.status);
+            //$("#openCourserow").css("display","none");
+        }
+    });
+	$("#openCourserow").css("display","none");
+	editBtnClicked=false;
+});
 
 function searchCourseTime(){
 	
@@ -793,3 +798,5 @@ function checkCapaticy(){
 		$("#capacityHint").css("display","none");
 	}
 }
+
+

@@ -40,7 +40,7 @@ public class StudentCorsFilter implements Filter {
 		request.setCharacterEncoding("UTF-8");
 		HttpServletRequest hrequest=(HttpServletRequest) request;
 		HttpSession session=hrequest.getSession(true);
-		if(session.getAttribute("avacourseList")!=null){
+		if((session.getAttribute("avacourseList")!=null)){
 			
 			chain.doFilter(request, response);
 		}else{

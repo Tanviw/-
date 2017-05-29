@@ -21,7 +21,7 @@
                 <li style="float:left;padding-right:20px">
                     <span id="Label3">欢迎您：</span>
                     <em>
-                        <span id="xhxm">${sessionScope.account}&nbsp;${sessionScope.username}&nbsp;${sessionScope.identity}</span></em>
+                        <span id="xhxm">${sessionScope.account}</span><span>&nbsp;${sessionScope.username}&nbsp;${sessionScope.identity}</span></em>
 
                 </li>
                 <li style="float:left">

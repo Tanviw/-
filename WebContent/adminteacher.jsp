@@ -30,7 +30,7 @@
 </div>
    <div class="clearfix"></div>
    <h4 style="color:#337ab7">教师名单</h4>
-    <table class="data table table-bordered table-striped" cellspacing="0" cellpadding="0">
+    <table class="data table table-bordered table-striped table-hover" cellspacing="0" cellpadding="0">
         <tbody id="teacList">
         <tr>
             <th>工号</th>

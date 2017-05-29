@@ -54,7 +54,7 @@
  <div id="addCourserow">
     <a id="addBtn" href="javascript:;">添加课程</a>
     <form name="addform">
-    <table class="table table-bordered" id="addCourseMsg">
+    <table class="table table-bordered table-hover" id="addCourseMsg">
     <tbody>
     	<tr>
             <th>课程代码</th>
@@ -151,7 +151,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-3 col-sm-offset-3 ">
-						 <button class="btn btn-primary" id="confirmOpenCourse" onclick="confirmOpenCourse()" >确定</button>
+						 <button class="btn btn-primary" id="confirmOpenCourse">确定</button>
 					</div>
 					<div class="col-sm-3 ">
 						 <button class="btn btn-primary" id="cancelOpenCourse">取消</button>
