@@ -1,23 +1,28 @@
-package com.servlet.admin;
+package com.teacher;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.DAO.TeacherDao;
+import com.javabeans.TeacherCourse;
+
 /**
- * Servlet implementation class IdentifySevlet
+ * Servlet implementation class ShowGradeNotInputCorsServlet
  */
-@WebServlet("/IdentifyServlet")
-public class IdentifyServlet extends HttpServlet {
+@WebServlet("/ShowGradeNotInputCorsServlet")
+public class ShowGradeNotInputCorsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IdentifyServlet() {
+    public ShowGradeNotInputCorsServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,22 +31,16 @@ public class IdentifyServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String account=request.getParameter("account");
-		String username=request.getParameter("username");
-		String identity=request.getParameter("identity");
-		request.getSession().setAttribute("account",account);
-		request.getSession().setAttribute("username",username);
 
-		if(identity.equals("admin")){
-			request.getSession().setAttribute("identity","管理员");
-			response.sendRedirect("ShowStuListServlet");
-		}else if(identity.equals("student")){
-			request.getSession().setAttribute("identity","同学");
-			response.sendRedirect("ShowChooseCorsServlet");
-		}else if(identity.equals("teacher")){
-			request.getSession().setAttribute("identity","老师");
-			response.sendRedirect("ShowTeacCorsServlet");
+		if(request.getSession().getAttribute("gradeNotInputCors")==null){
+			
+			long teacherAccount= Long.parseLong((String) request.getSession().getAttribute("account"));
+			TeacherDao dao=new TeacherDao();
+	        ArrayList<TeacherCourse> gradeNotInputCors=dao.gradeNotInputCors(teacherAccount);
+	        request.getSession().setAttribute("gradeNotInputCors", gradeNotInputCors);//返回教师已开设课程信息列表
 		}
+		response.sendRedirect("teacgradeinput.jsp");
+	
 	}
 
 	/**

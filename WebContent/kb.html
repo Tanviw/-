@@ -3,8 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+.zu-top-nav-link, .zu-top-nav-link:visited, .zu-top-nav-link:active {
+    color: #eee;
+}
+
+
+div[contentEditable], input, textarea, button, a:link {
+    -webkit-tap-highlight-color: rgba(225,225,225,.5);
+}
+.zu-top-nav-link, .zu-top-nav-link:visited, .zu-top-nav-link:active {
+    color: #eee;
+}
+
+div[contentEditable], input, textarea, button, a:link {
+    -webkit-tap-highlight-color: rgba(225,225,225,.5);
+}
+
+.zu-top-nav-link {
+    width: 54px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    display: block;
+    color: #f2f4f5;
+    text-shadow: 0 1px 1px rgba(0,0,0,.12);
+    font-size: 14px;
+}
+.zu-top-nav-count {
+    left: 31px;
+}
+
+.zu-top-nav-count, .zu-top-nav-userinfo .zu-top-nav-pm-count {
+    z-index: 12;
+    top: 5px;
+    position: absolute;
+}
+
+.zg-noti-number {
+    background: #bf1031;
+    border: 1px solid #b11331;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1), inset 0 1px 0 rgba(255,255,255,.15);
+    color: #fff;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    -webkit-text-size-adjust: none;
+    padding: 0 5px;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 16px;
+    text-indent: 0;
+    text-align: center;
+    text-decoration: none;
+}
+.zu-top-nav-link {
+    width: 54px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    display: block;
+    color: #f2f4f5;
+    text-shadow: 0 1px 1px rgba(0,0,0,.12);
+    font-size: 14px;
+    }
+</style>
 </head>
 <body>
-
+<a class="zu-top-nav-link" href="javascript:;" id="zh-top-nav-count-wrap" role="button"><span class="mobi-arrow"></span>消息<span id="zh-top-nav-count" class="zu-top-nav-count zg-noti-number">1</span></a>
 </body>
 </html>

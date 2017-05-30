@@ -276,7 +276,7 @@ public class CourseDao  extends BaseDao{
 		}
 		//为课程分配教师
 		public String openCourse(TeacherCourse tc){
-			String sql1="INSERT INTO teachercourse VALUES(null,?,?,?,?,?,?)";
+			String sql1="INSERT INTO teachercourse VALUES(null,?,?,?,?,?,?,0)";
 			String sql2="INSERT INTO classroomoccupied VALUES(?,?)";
 			Connection conn=null;
 			PreparedStatement pstmt=null;

@@ -442,4 +442,77 @@ public class StudentDao extends BaseDao {
 		
 		
 	}
+	//学生查询成绩和平均绩点
+	public String checkGrade(long stuAccount){
+		String sql="SELECT course.courseNumber,course.courseName ,"
+				+ "stuGrade,credit,courseGPA FROM stugrade INNER JOIN course"
+				+ " ON stugrade.courseNumber=course.courseNumber WHERE stuAccount=?;";
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rst=null;
+		double sum=0.0;
+		int creditsum=0;
+		try {
+			conn = dataSource.getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setLong(1,stuAccount);
+			rst=pstmt.executeQuery();
+			JSONArray array=new JSONArray();
+			java.sql.ResultSetMetaData metaData=rst.getMetaData();
+			int columnCount =metaData.getColumnCount();
+			 JSONObject jsonObj ;
+			while (rst.next()) {  
+				creditsum+=rst.getInt("credit");//总学分
+				sum+=rst.getInt("credit")*rst.getDouble("courseGPA");//学分*绩点之和
+		        jsonObj = new JSONObject();  
+		         
+		        // 遍历每一列  
+		        for (int i = 1; i <= columnCount; i++) {  
+		            String columnName =metaData.getColumnLabel(i);  
+		            String value = rst.getString(columnName);  
+						jsonObj.put(columnName, value);
+		        }   
+		        array.add(jsonObj);   
+		    }  
+			if(creditsum==0){
+				return "暂未有成绩！";
+			}else{
+				
+				double gpa=sum/(creditsum*1.0);
+				jsonObj = new JSONObject(); 
+				jsonObj.put("gpa",gpa);
+				array.add(jsonObj);
+				return array.toString();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
+		}finally{
+			if(rst!=null){
+				try {
+					rst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}	
+			}
+			if(pstmt!=null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+				
+		}
+		
+	
+	}
+	
 }

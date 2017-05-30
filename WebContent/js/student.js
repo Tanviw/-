@@ -114,3 +114,79 @@ function getTeacherName(){
 	var teacName=$("#commentcors option:selected").attr("data");
 	$("#commentTeac").find("th:eq(2)").text(teacName);
 }
+function commitComment(){
+	var seleArr=0;
+	$("#commentTeac option:selected").each(function(){
+		seleArr=seleArr+Number($(this).val());
+		
+	});
+	var teacherGrade=seleArr/4.0;
+	
+	var commentContent=$("#comment").val();
+
+	var teacherCourseId=$("#commentcors option:selected").val();
+
+	$.ajax({
+        type:"POST",
+        url:"StuCommentTeacServlet",
+        data:{
+        	"teacherCourseId":teacherCourseId,
+            "commentContent":commentContent,
+            "teacherGrade":teacherGrade
+        },
+        success:function(data,status) {
+            if(data!="error"){
+            	alert("评价成功！");
+            	$("#commentcors option:selected").remove();
+            	getTeacherName();
+            	$("#comment").val("");
+            }else{
+            	alert("后台出毛病啦！");
+            }
+        },
+        error: function() {
+            alert("评价失败");
+        }
+    });
+}
+
+function checkGrade(){
+	var stuAccount=$("#xhxm").text();
+	$.ajax({
+        type:"GET",
+        url:"CheckGradeServlet",
+        data:{
+        	"stuAccount":stuAccount
+        },
+        success:function(data,status) {
+        	
+            if(data=="暂未有成绩！"){
+            	$("#gradeList").html("暂无您的成绩！");
+            }else if(data=="error"){
+            	alert("后台出毛病啦！");
+            	
+            }else{
+            	var gradeMsg=$.parseJSON(data);
+            	var gradeTable="<h4 style='text-align:center;color:#288690;'>成绩列表</h4><hr/><table class='data table table-bordered table-striped table-hover' cellspacing='0' cellpadding='0'><tbody><tr><th>课程代码</th><th>课程名称</th>"
+            		+"<th>成绩</th><th>学分</th><th>绩点</th></tr>";
+            	var i;
+            	 for(i = 0;i<gradeMsg.length-1; i++) {
+            		 gradeTable+="<tr><td>"+gradeMsg[i].courseNumber+"</td><td>"
+            		 +gradeMsg[i].courseName+"</td><td>"
+            		 +gradeMsg[i].stuGrade+"</td><td>"
+            		 +gradeMsg[i].credit+"</td><td>"
+            		 +gradeMsg[i].courseGPA+"</td></tr>";
+            	 }
+            	 gradeTable+="</tbody></table>";
+            	var gpa=gradeMsg[i].gpa;
+            	$("#gpa").html("平均学分绩点："+gpa);
+            	$("#gradeList").html(gradeTable);
+            	
+            	
+            }
+        },
+        error: function() {
+            alert("获取成绩失败");
+        }
+    });
+}

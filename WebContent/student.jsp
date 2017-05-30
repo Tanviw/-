@@ -21,7 +21,7 @@
 
             <li class="active"><a href="#">网上选课</a></li>
             <li><a href="#">课表查询</a></li>
-            <li><a href="#">成绩查询</a></li>
+            <li><a href="stugrade.jsp">成绩查询</a></li>
             <li><a href="stucomment.jsp">教师评价</a></li>
             <li><a href="#">教师答疑</a></li>
 

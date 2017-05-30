@@ -104,3 +104,38 @@
 	margin:0 auto;
 	
 }
+.teacComment span,.teacComment h4{
+	color:#288690;
+	margin-top:30px;
+	font-size:16px;
+	padding-left:20px;
+	
+}
+.teacComment h3{
+	 text-align:center;
+	 color:#288690;
+}
+#commentContent{
+	font-size:16px;
+	line-height:40px;
+	background: url(../images/column_bg.jpg) bottom center ;
+   
+	
+	
+}
+
+
+#commentContent ul li{
+	display: block;
+    color:rgba(8, 8, 8, 0.7);
+    width: 70%;
+    padding: 5px 20px 5px 20px;
+    margin: 0 auto;
+ 
+    border-bottom: 1px solid #E0E0E0;
+    background: rgba(255, 234, 234, 0.36);
+}
+#stuListTable{
+	width:60%;
+	margin:0 auto;
+}
