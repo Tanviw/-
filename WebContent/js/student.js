@@ -190,3 +190,124 @@ function checkGrade(){
         }
     });
 }
+
+
+function showQuestion(e){
+	var teacherCourseId=$(e).attr("data");
+	$(e).parent().find('.curr').removeClass('curr');
+	$(e).addClass('curr');
+	var courseName=$(e).text();
+	var stuAccount=$("#xhxm").text();
+	$.ajax({
+        type:"GET",
+        url:"ShowStuQuesNotAnsServlet",
+        data:{
+        	"teacherCourseId":teacherCourseId,
+            "stuAccount":stuAccount
+        },
+        success:function(data,status) {
+            if(data!="error"){
+            	var quesMsg=$.parseJSON(data);
+            	var quesUnAnsDom="";
+            	
+            	 for(var i = 0;i<quesMsg.length; i++) {
+            		 var time=quesMsg[i].questionTime.substring(0,quesMsg[i].questionTime.length-2);
+            		 quesUnAnsDom+="<li><div style='font-size:14px;color:#9B9B9B'>"
+                 		+time+"</div>"+quesMsg[i].questionContent+"</li>";
+            	 }
+            	 $("#questionList").html(quesUnAnsDom);
+            	
+            }else{
+            	alert("后台出毛病啦！");
+            }
+        },
+        error: function() {
+            alert("获取提问记录失败");
+        }
+    });
+	
+	
+	var hdom="<br/><h4 style='color:#288690;font-size:18px' data='"+teacherCourseId+"'>向"+courseName
+	+"老师提问</h4><textarea id='txtarea'></textarea><button class='btn btn-success' onclick='submitQuestion()'>提交</button>";
+	$("#corsTeac").html(hdom);
+	
+	$.ajax({
+        type:"GET",
+        url:"ShowStuQuesAnswerServlet",
+        data:{
+        	"teacherCourseId":teacherCourseId,
+            "stuAccount":stuAccount
+        },
+        success:function(data,status) {
+            if(data!="error"){
+            	var ansMsg=$.parseJSON(data);
+            	var AnswerDom="";
+            	var i;
+            	 for(i = 0;i<ansMsg.length-1; i++) {
+            		 var questime=ansMsg[i].questionTime.substring(0,ansMsg[i].questionTime.length-2);
+            		 var answtime=ansMsg[i].answerTime.substring(0,ansMsg[i].answerTime.length-2);
+            		 AnswerDom+="<li><div style='font-size:14px;color:rgb(165, 155, 170)'>"
+                 		+questime+"</div>"+ansMsg[i].questionContent                
+                 		+"<div style='font-size:14px;color:rgb(165, 155, 170)'>"
+                 		+answtime+"</div><div style='color:rgb(108, 115, 158)'>"+ansMsg[i].questionAnswer+"</div></li>";
+            	 }
+            	 var leftUncheckedNum=Number(ansMsg[i].count);//已查看的问题数量
+            	 var count=Number($('#teacdy').text());//当前页面显示的待查看问题数量
+	            	if(count>=1){
+	            		count=count-leftUncheckedNum;
+	            		if(count>=1){
+	            			$('#teacdy').text(count);
+	            			
+	            		}else{
+	            			$('#teacdy').remove();
+	            		}
+	            	}else{
+	            		$('#teacdy').remove();
+	            	}
+            	 $("#answerList").html(AnswerDom);
+            	
+            }else{
+            	alert("后台出毛病啦！");
+            }
+        },
+        error: function() {
+            alert("获取回答记录失败");
+        }
+    });
+	
+	
+}
+
+function submitQuestion(){
+	var stuAccount=$("#xhxm").text();
+	var teacherCourseId=$("#corsTeac").find("h4:eq(0)").attr("data");
+	var question=$("#txtarea").val();	
+	console.log(stuAccount);
+	console.log(teacherCourseId);
+	console.log(question);
+	$.ajax({
+        type:"POST",
+        url:"StuAskQuesServlet",
+        data:{
+        	"teacherCourseId":teacherCourseId,
+            "stuAccount":stuAccount,
+            "question":question
+        },
+        success:function(data,status) {
+            if(data!="error"){
+            	alert("提问成功！");
+            	var currentTime=new Date().toLocaleString();
+            	var quesDom="<li><div style='font-size:14px;color:#9B9B9B'>"
+            		+currentTime+"</div>"+question+"</li>";
+            	$("#questionList").append(quesDom);
+            	$("#txtarea").val("");
+            }else{
+            	alert("后台出毛病啦！");
+            }
+        },
+        error: function() {
+            alert("提问失败");
+        }
+    });
+	
+}

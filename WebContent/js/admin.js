@@ -528,6 +528,7 @@ function addCourse(){
         },
         success:function(data,status) {
             if(data=="ok"){
+            	alert("添加成功！");
             	$("#courseList").append("<tr><td>"+courseNumber+"</td><td>"
             			+courseName+"</td><td>"
             			+credit+"</td><td>"

@@ -248,7 +248,7 @@ public class StudentDao extends BaseDao {
 				pstmt.setInt(7,rst.getInt(1));
 				col=pstmt.executeUpdate();
 				long autoIncKeyFromApi = -1;    
-		        rst = pstmt.getGeneratedKeys();    
+		        rst = pstmt.getGeneratedKeys();    //返回插入的学生主键，学生账号
 		        if (rst.next()) {    
 		          autoIncKeyFromApi = rst.getLong(1);    
 		          return ""+autoIncKeyFromApi;    
@@ -514,5 +514,228 @@ public class StudentDao extends BaseDao {
 		
 	
 	}
+	//学生提问
+	public String stuAskQuestion(int teacherCourseId ,long stuAccount,String question){
+		String sql1="INSERT INTO coursequestion VALUES(null,?,?,?,null,now(),null,0,0);";
+		
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rst=null;
+		int col1=0;
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt=conn.prepareStatement(sql1);
+			pstmt.setInt(1,teacherCourseId);
+			pstmt.setLong(2,stuAccount);
+			pstmt.setString(3,question);
+			col1=pstmt.executeUpdate();
+			if(col1!=0){
+		        	  return "ok";
+		        } 
+		        return "error";
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
+		}finally{
+			if(rst!=null){
+				try {
+					rst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}	
+			}
+			if(pstmt!=null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+				
+		}
+		
+	}
+	//获取学生提问未回答的问题
+	public String getQuesNotAns(long stuAccount,int teacherCourseId){
+		String sql="SELECT questionTime,questionContent FROM coursequestion "
+				+ "WHERE teacherCourseId=? AND stuAccount=? AND isAnswered=0";
+		
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rst=null;
+		try {
+			conn = dataSource.getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1,teacherCourseId);
+			pstmt.setLong(2,stuAccount);
+			rst=pstmt.executeQuery();
+			JSONArray array=new JSONArray();
+			java.sql.ResultSetMetaData metaData=rst.getMetaData();
+			int columnCount =metaData.getColumnCount();
+			while (rst.next()) {  
+		        JSONObject jsonObj = new JSONObject();  
+		         
+		        // 遍历每一列  
+		        for (int i = 1; i <= columnCount; i++) {  
+		            String columnName =metaData.getColumnLabel(i);  
+		            String value = rst.getString(columnName);  
+						jsonObj.put(columnName, value);
+		        }   
+		        array.add(jsonObj);   
+		    }  
+			return array.toString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
+		}finally{
+			if(rst!=null){
+				try {
+					rst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}	
+			}
+			if(pstmt!=null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+				
+		}  
+			
+		
+	}
+	
+	//根据教师课程获取学生提问已回答的问题
+	public String getQuesAnswered(long stuAccount,int teacherCourseId){
+		String sql="SELECT questionTime,questionContent ,questionAnswer ,"
+				+ "answerTime FROM coursequestion "
+				+ "WHERE teacherCourseId=? AND stuAccount=? AND isAnswered=1";
+		String sql2="UPDATE coursequestion SET isChecked=1 WHERE teacherCourseId=? AND stuAccount=?;";
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rst=null;
+		try {
+			conn = dataSource.getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1,teacherCourseId);
+			pstmt.setLong(2,stuAccount);
+			rst=pstmt.executeQuery();
+			JSONArray array=new JSONArray();
+			java.sql.ResultSetMetaData metaData=rst.getMetaData();
+			int columnCount =metaData.getColumnCount();
+			int col=0;
+			while (rst.next()) {  
+		        JSONObject jsonObj = new JSONObject();  
+		         
+		        // 遍历每一列  
+		        for (int i = 1; i <= columnCount; i++) {  
+		            String columnName =metaData.getColumnLabel(i);  
+		            String value = rst.getString(columnName);  
+						jsonObj.put(columnName, value);
+		        }   
+		        array.add(jsonObj);   
+		    }  
+			pstmt=conn.prepareStatement(sql2);
+			pstmt.setInt(1,teacherCourseId);
+			pstmt.setLong(2,stuAccount);
+			col=pstmt.executeUpdate();
+			
+				JSONObject jsonObj1 = new JSONObject(); 
+				jsonObj1.put("count", col);//将当前改变问题已被查看状态的记录数返回
+				array.add(jsonObj1); 
+			
+			return array.toString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
+		}finally{
+			if(rst!=null){
+				try {
+					rst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}	
+			}
+			if(pstmt!=null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+				
+		}  
+			
+		
+	}
+	//显示待查看回答数量
+	public int getUncheckedAnsNum(long stuAccount){
+		String sql="SELECT COUNT(*) FROM coursequestion WHERE stuAccount=? AND"
+				+ " isAnswered=1 AND isChecked=0; ";
+		
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rst=null;
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setLong(1,stuAccount);
+			rst=pstmt.executeQuery();
+			if(rst.next()){
+				return rst.getInt(1);
+			}
+			return 0;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}finally{
+			if(pstmt!=null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+				
+		}
+		
+		
+	}
+	
 	
 }

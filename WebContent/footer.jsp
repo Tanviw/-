@@ -8,7 +8,7 @@
 #copyright{
     clear: both;
     position:relative;
-    top:200px;
+    top:150px;
     width: 100%;
     height:75px;
     margin: 0 auto;

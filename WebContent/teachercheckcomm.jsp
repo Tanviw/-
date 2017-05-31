@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="head.jsp" %>
+<%@include file="/head.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>教师查看评价</title>
+    <title>查看课程评价</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
@@ -21,7 +21,12 @@
 
             <li class="active"><a href="#">查看课程评价</a></li>
             <li><a href="ShowGradeNotInputCorsServlet">录入课程成绩</a></li>
-            <li><a href="#">学生答疑</a></li>
+            <li><a href="teachercheckques.jsp">教师答疑</a>
+
+			   <c:if test="${sessionScope.unsolvedQuesNum>0}">
+            <span id='teacdy'>${unsolvedQuesNum}</span>
+            </c:if>
+			</li>
            
         </ul>
     </div>
@@ -56,7 +61,7 @@
 
 
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>
 
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>

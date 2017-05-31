@@ -1,6 +1,7 @@
 package com.servlet.student;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -11,20 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.DAO.CourseDao;
 import com.DAO.StudentDao;
-import com.javabeans.Course;
 import com.javabeans.TeacherCourse;
 
 /**
- * Servlet implementation class ShowChooseCorsServlet
+ * Servlet implementation class ShowStuQuesNotAnsServlet
  */
-@WebServlet("/ShowChooseCorsServlet")
-public class ShowChooseCorsServlet extends HttpServlet {
+@WebServlet("/ShowStuQuesNotAnsServlet")
+public class ShowStuQuesNotAnsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShowChooseCorsServlet() {
+    public ShowStuQuesNotAnsServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,17 +33,15 @@ public class ShowChooseCorsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		long stuAccount= Long.parseLong((String) request.getSession().getAttribute("account"));
-		CourseDao dao=new CourseDao();
-        ArrayList<TeacherCourse> avacourseList=dao.findAllAvaCourse();
-        ArrayList<TeacherCourse> selectedCorsList=dao.findSelectedCourse(stuAccount);
-        request.getSession().setAttribute("avacourseList", avacourseList);//返回可选课程信息列表
-        request.getSession().setAttribute("selectedCorsList", selectedCorsList);//返回学生已选课程信息列表
-        StudentDao dao1=new StudentDao();
-        int uncheckedAnsNum=dao1.getUncheckedAnsNum(stuAccount);
-        request.getSession().setAttribute("uncheckedAnsNum", uncheckedAnsNum);
-        response.sendRedirect("student.jsp");
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out=response.getWriter();
+		
+		long stuAccount= Long.parseLong(request.getParameter("stuAccount"));
+		int teacherCourseId= Integer.parseInt(request.getParameter("teacherCourseId"));
+		StudentDao dao=new StudentDao();
+		String result=dao.getQuesNotAns(stuAccount, teacherCourseId);
+		
+		out.print(result);
 	
 	}
 
@@ -51,7 +49,8 @@ public class ShowChooseCorsServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }
